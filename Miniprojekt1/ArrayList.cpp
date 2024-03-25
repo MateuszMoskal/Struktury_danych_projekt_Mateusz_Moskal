@@ -23,7 +23,7 @@ ArrayList::ArrayList(const ArrayList& arrayList) {
 
 ArrayList::~ArrayList()
 {
-	delete[] tab; // zwalniam pamiêæ przy usuwaniu obiektu
+	delete[] tab; // zwalniam pamiêæ przy usuwaniu obiektu.
 }
 
 void ArrayList::wyczysc()
