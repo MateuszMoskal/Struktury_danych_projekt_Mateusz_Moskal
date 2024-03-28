@@ -5,89 +5,92 @@ using namespace std;
 
 DoublyLinkedList::DoublyLinkedList()
 {
-	head = nullptr;
-	tail = nullptr;
-	ilosc = 0;
+	head = nullptr; // inicjalizuję wskaźnik head
+	tail = nullptr; // inicjalizuję wskaźnik tail 
+	ilosc = 0; // poczatkowa liczba elementow 
 }
+
+// Konstruktor kopiujący
 DoublyLinkedList::DoublyLinkedList(const DoublyLinkedList& list) : DoublyLinkedList()
 {
 	skopiuj(list);
 }
+// Destruktor 
 DoublyLinkedList::~DoublyLinkedList()
 {
-	skasuj();
+	skasuj(); 
 }
+// Przeciążenie operatora 
 DoublyLinkedList& DoublyLinkedList::operator=(const DoublyLinkedList& list)
 {
-	skasuj();
-	skopiuj(list);
+	skasuj(); // usunięcie listy
+	skopiuj(list); // skopiowanie nowej listy 
 	return *this;
 }
 
 void DoublyLinkedList::wyczysc()
 {
-	this->~DoublyLinkedList();
+	this->~DoublyLinkedList(); // wywołanie destruktora
 	head = nullptr;
 	tail = nullptr;
-	ilosc = 0;
+	ilosc = 0; // zresetowanie liczniki ilosci elementów
 }
 
 //ok
 void DoublyLinkedList::dodajNaPoczatek(int dane)
 {
-	Element2* element = new Element2;
-	element->dane = dane;
+	Element2* element = new Element2; // utworzenie nowego elementu 
 	element->pop = nullptr;
 	element->nast = head;
-	if (head == nullptr)
+	if (head == nullptr) // sprawdzam czy lista jest pusta 
 	{
-		head = element;
+		head = element; // jeżeli tak to ustawiam wskaźniki na nowy element 
 		tail = element;
 	}
 	else
 	{
-		head->pop = element;
+		head->pop = element; // w przeciwnym razie ustawiam poprzedni element heada na nowy element
 		head = element;
 	}
 
-	ilosc++;
+	ilosc++; // zwiększam liczniki ilosci elementów 
 }
 
-//ok
+
 void DoublyLinkedList::dodajNaKoniec(int dane)
 {
-	Element2* element = new Element2;
+	Element2* element = new Element2; // ten sam schemat co dodawanie na początek
 	element->dane = dane;
 	element->nast = nullptr;
 	element->pop = nullptr;
 
-	if (tail == nullptr)
+	if (tail == nullptr) // Sprawdzam czy lista jest pusta 
 	{
-		head = element;
+		head = element; // jeżeli tak, ustawiam nowy element 
 		tail = element;
 	}
 	else
 	{
-		tail->nast = element;
+		tail->nast = element; // w przeciwnym razie ustawiam nastepny element ogona jako nowy element 
 		element->pop = tail;
-		tail = element;
+		tail = element; 
 	}
-	ilosc++;
+	ilosc++; // zwiększam licznik
 }
 
-//ok
+// Dodanie elementu w dowolnym miejscu 
 bool DoublyLinkedList::dodaj(int index, int dane)
 {
-	if (index < 0)
+	if (index < 0) // Sprawdzenie czy index jest prawidłowy 
 	{
 		return false;
 	}
-	if (index == 0)
+	if (index == 0) // Jeżeli jest równy 0 to dodajemy na początek listy 
 	{
 		dodajNaPoczatek(dane);
 		return true;
 	}
-	if (index == ilosc)
+	if (index == ilosc) // jeżeli jest równy ilosci dodajemy na koniec 
 	{
 		dodajNaKoniec(dane);
 		return true;
@@ -96,77 +99,77 @@ bool DoublyLinkedList::dodaj(int index, int dane)
 	{
 		return false;
 	}
-	Element2* przed = znajdzElementPrzed(index);
-	if (przed == nullptr)
+	Element2* przed = znajdzElementPrzed(index); // znalezienie elementu poprzedzajacego wstawiany element 
+	if (przed == nullptr) // Sprawdzam czy znalazłem element poprzedni 
 	{
 		return false;
 	}
 	Element2* za = przed->nast;
 
 	Element2* nowy = new Element2;
-	nowy->dane = dane;
-	nowy->nast = za;
+	nowy->dane = dane; 
+	nowy->nast = za; // ustawienie nowego następnego elementu 
 	przed->nast = nowy;
 	nowy->pop = przed;
-	if (przed == tail)
+	if (przed == tail) // Sprawdzam czy poprzedni element nie jest tailem 
 	{
-		tail = nowy;
+		tail = nowy; // jeżeli jest to ustawiam jako ogon 
 		nowy->nast = nullptr;
 	}
 	else
 	{
-		nowy->nast = za;
+		nowy->nast = za; // w przeciwnym razie ustawienie nowego następnego elementu 
 	}
 	ilosc++;
 
 	return true;
 }
-//ok
+
 bool DoublyLinkedList::usun(int index)
 {
-	if (index < 0)
+	if (index < 0) // sprawdzam czy index jest prawidłowy 
 	{
 		return false;
 	}
 
-	if (head == nullptr)
+	if (head == nullptr) // sprawdzam czy lista jest pusta
 	{
 		return false;
 	}
 
-	if (index == 0)
+	if (index == 0) // jeżeli index równy 0 to usuwam element z początku 
 	{
 		return usunZPoczateku();
 	}
-	if (index == ilosc - 1)
+	if (index == ilosc - 1) // jeżeli index równy ilosc - 1 to usuwam z końca listy 
 	{
 		return usunZKonca();
 	}
-	Element2* przed = znajdzElementPrzed(index);
+	Element2* przed = znajdzElementPrzed(index); // Szukam elementu poprzedzającego usuwany element 
 	if (przed == nullptr)
 	{
 		return false;
 	}
 
-	Element2* doUsuniecia = przed->nast;
-	if (doUsuniecia == nullptr)
+	Element2* doUsuniecia = przed->nast; // zapisanie usuwanego elementu 
+	if (doUsuniecia == nullptr) // Sprawdzam czy usuwany element istnieje 
 	{
 		return false;
 	}
-	Element2* za = doUsuniecia->nast;
+	Element2* za = doUsuniecia->nast; // zapisanie elementu za usuwanym elementem 
 	przed->nast = za;
-	if (doUsuniecia == tail)
+	if (doUsuniecia == tail) // sprawdzam czy usuwany element był tailem 
 	{
-		tail = przed;
+		tail = przed; // jesli tak to ustawiam element poprzedni jako nowy tail
 	}
 	else
 	{
 		za->pop = przed;
 	}
 
-	delete doUsuniecia;
+	delete doUsuniecia; // usuwam element do usunięcia 
 
-	ilosc--;
+	ilosc--; // redukuje liczbe elementow 
 	return true;
 
 }
@@ -177,48 +180,48 @@ bool DoublyLinkedList::usunZPoczateku()
 	{
 		return false;
 	}
-	Element2* doUsuniecia = head;
-	head = head->nast;
-	if (head != nullptr)
+	Element2* doUsuniecia = head; // zapisanie pierwszego elementu 
+	head = head->nast; // ustawienie nastepnego elementu jako heada 
+	if (head != nullptr) // jezeli head jest rozny od nullptr
 	{
-		head->pop = nullptr;
-	}
+		head->pop = nullptr; // ustawiam poprzedni element jako nullptr
+	} 
 	else
 	{
-		tail = nullptr;
+		tail = nullptr; // w przeciwnym wypadku tail ustawiam jako nullptr
 	}
 
-	delete doUsuniecia;
-	ilosc--;
+	delete doUsuniecia; // Usuwam pierwszy element 
+	ilosc--; // redukuje ilosc elementów 
 	return true;
 }
 bool DoublyLinkedList::usunZKonca()
 {
-	if (tail == nullptr)
+	if (tail == nullptr) // Sprawdzam czy lista jest pusta
 	{
 		return false;
 	}
-	Element2* doUsuniecia = tail;
+	Element2* doUsuniecia = tail; // zapisuje ostatni element 
 	tail = tail->pop;
 
-	if (tail != nullptr)
+	if (tail != nullptr) // Sprawdzam czy istnieje poprzedni element 
 	{
-		tail->nast = nullptr;
+		tail->nast = nullptr; // jesli tak ustawiam poprzedni element jako nullptr
 	}
 	else
 	{
-		head = nullptr;
+		head = nullptr; // w przeciwnym razie ustawiam head jako nullptr
 	}
 
-	delete doUsuniecia;
-	ilosc--;
+	delete doUsuniecia; // usuwam ostatni element 
+	ilosc--; // redukuje ilosc elementow 
 	return true;
 }
 
 //ok
 int DoublyLinkedList::dajIlosc() const
 {
-	return ilosc;
+	return ilosc; // zwracam ilosc elementow 
 }
 //ok
 int DoublyLinkedList::dajEmenet(int index) const
@@ -233,11 +236,11 @@ int DoublyLinkedList::dajEmenet(int index) const
 		return false;
 	}
 
-	if (index == 0)
+	if (index == 0) // zwrócenie pierwszego elementu 
 	{
 		return head->dane;
 	}
-	if (index == ilosc - 1)
+	if (index == ilosc - 1) // zwrocenie ostatniego elementu 
 	{
 		return tail->dane;
 	}
@@ -256,7 +259,7 @@ int DoublyLinkedList::dajEmenet(int index) const
 }
 
 
-//ok
+// wypisanie zawartosci listy 
 void DoublyLinkedList::wypisz() const
 {
 	cout << "[";
@@ -276,6 +279,7 @@ void DoublyLinkedList::wypisz() const
 	cout << "]" << endl;
 }
 
+// znajdowanie elementu poprzedzającego element o podanym indeksie 
 Element2* DoublyLinkedList::znajdzElementPrzed(int index) const
 {
 	if (head == nullptr)
@@ -300,6 +304,7 @@ Element2* DoublyLinkedList::znajdzElementPrzed(int index) const
 	}
 }
 
+// znajdowanie elementu poprzedzającego element o podanymm indeksie zaczynając od przodu 
 Element2* DoublyLinkedList::znajdzElementPrzedOdProdzu(int index) const
 {
 	Element2* pom = head;
@@ -314,6 +319,8 @@ Element2* DoublyLinkedList::znajdzElementPrzedOdProdzu(int index) const
 	}
 	return pom;
 }
+
+//znajdowanie elementu poprzedzającego element o podanymm indeksie zaczynając od tyłu
 Element2* DoublyLinkedList::znajdzElementPrzedOdTylu(int index) const
 {
 	//int ostatniIndex = ilosc - 1;
@@ -328,7 +335,7 @@ Element2* DoublyLinkedList::znajdzElementPrzedOdTylu(int index) const
 
 	return kursor;
 }
-
+// kopiowanie zawartości listy z innej listy 
 void DoublyLinkedList::skopiuj(const DoublyLinkedList& list)
 {
 	Element2* kursor = list.head;
@@ -340,6 +347,7 @@ void DoublyLinkedList::skopiuj(const DoublyLinkedList& list)
 	}
 }
 
+// usuwanie wszystkich elementów z listy 
 void DoublyLinkedList::skasuj()
 {
 	while (head != nullptr)
