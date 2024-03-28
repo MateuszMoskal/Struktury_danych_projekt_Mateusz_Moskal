@@ -7,16 +7,16 @@ using namespace std;
 class Menu
 {
 private:
-	Kontener* kontener;
-	string nazwa;
+	Kontener* kontener; // wskaźnik na obiekt klasy kontener 
+	string nazwa; // nazwa menu 
 public:
 	Menu(Kontener* kontener, string nazwa);
-	void uruchom();
+	void uruchom(); // uruchomienie menu 
 private:
 	void wypiszMenu();
-	void wyczysc();
-	void wczytajZPliku();
-	void stworzLosowe();
+	void wyczysc(); 
+	void wczytajZPliku(); // wczytywanie danych z pliku do kontenera 
+	void stworzLosowe(); // metoda tworząca losowe dane 
 
 	void dodajNaKoniec();
 	void dodajNaWybranyIndex();
@@ -24,10 +24,10 @@ private:
 
 	void usunZPoczatku();
 	void usunZWybranegoIndeksu();
-	void usunZKonca();
+	void usunZKonca(); 
 
-	void wypisz();
-	void wypiszIlosc();
+	void wypisz(); // metoda wypisująca zawartość kontenera 
+	void wypiszIlosc(); // metoda wypisująca ilość elementów 
 
 
 };

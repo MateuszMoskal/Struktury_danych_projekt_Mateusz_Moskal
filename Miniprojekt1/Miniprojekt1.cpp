@@ -32,8 +32,8 @@ int main()
 	HeadTailSinglyLinkedList headTailSinglyLinkedList;
 	DoublyLinkedList doublyLinkedList;
 
-	PomiaryCzasu pomiar(100000);
-	Menu menuArrayList(&arrayList, "array list");
+	PomiaryCzasu pomiar(100000); // miejsce w ktorym definiuje ilosc operacji do testu 
+	Menu menuArrayList(&arrayList, "array list"); // Inicjalizacja pszczególnych menu 
 	Menu menuHeadSinglyLinkedList(&headSinglyLinkedList, "head singly linked list");
 	Menu menuHeadTailSinglyLinkedList(&headTailSinglyLinkedList, "head-tail singly linked list");
 	Menu menuDoublyLinkedList(&doublyLinkedList, "doubley linked list");
@@ -48,19 +48,19 @@ int main()
 		switch (wybor)
 		{
 		case 1:
-			menuArrayList.uruchom();
+			menuArrayList.uruchom(); // Uruchomienie menu dla tablicy dynamicznej 
 			break;
 		case 2:
-			menuHeadSinglyLinkedList.uruchom();
+			menuHeadSinglyLinkedList.uruchom(); // Uruchomienie menu dla listy jednokierunkowej z jedynym wskaźnikiem 
 			break;
 		case 3:
-			menuHeadTailSinglyLinkedList.uruchom();
+			menuHeadTailSinglyLinkedList.uruchom(); // Uruchomienie menu dla listy jednokierunkowej z dwoma wskaźnikami
 			break;
 		case 4:
-			menuDoublyLinkedList.uruchom();
+			menuDoublyLinkedList.uruchom(); // Uruchomienie menu dla listy dwukierunkowej 
 			break;
 		case 5:
-			pomiar.wykonajTesty();
+			pomiar.wykonajTesty(); // testy
 			break;
 		}
 	}

@@ -5,14 +5,14 @@
 class HeadTailSinglyLinkedList : public Kontener
 {
 private:
-	Element* head;
-	Element* tail;
+	Element* head; // pierwszy wskaźnik
+	Element* tail; // drugi wskaźnik 
 	int ilosc;
 public:
-	HeadTailSinglyLinkedList();
-	HeadTailSinglyLinkedList(const HeadTailSinglyLinkedList& list);
-	~HeadTailSinglyLinkedList();
-	HeadTailSinglyLinkedList& operator=(const HeadTailSinglyLinkedList& list);
+	HeadTailSinglyLinkedList(); // konstruktor 
+	HeadTailSinglyLinkedList(const HeadTailSinglyLinkedList& list); // konstruktor kopiujący
+	~HeadTailSinglyLinkedList(); // destruktor 
+	HeadTailSinglyLinkedList& operator=(const HeadTailSinglyLinkedList& list); // operator przypisania 
 
 	void wyczysc() override;
 

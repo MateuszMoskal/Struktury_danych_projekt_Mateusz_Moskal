@@ -2,7 +2,7 @@
 
 struct Element
 {
-	int dane;
-	Element* nast;
+	int dane; // zmienna przechowująca dane w elemencie 
+	Element* nast; // wskaźnik na następny element
 };
 

@@ -2,7 +2,7 @@
 class Kontener
 {
 public:
-	virtual void wyczysc() = 0;
+	virtual void wyczysc() = 0; // wykorzystuje metody wirtualne aby dynamicznie wiązać funkcje 
 
 	virtual void dodajNaPoczatek(int dane) = 0;
 	virtual void dodajNaKoniec(int dane) = 0;
