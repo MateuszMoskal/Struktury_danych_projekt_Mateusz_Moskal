@@ -5,14 +5,18 @@ using namespace std;
 
 HeadTailSinglyLinkedList::HeadTailSinglyLinkedList()
 {
-	head = nullptr;
-	tail = nullptr;
+	head = nullptr; // inicjalizacja wskaźnika na początek listy 
+	tail = nullptr; // inicjalizacja wskaźnika na koniec listy
 	ilosc = 0;
 }
+
+// konstruktor kopiujący 
 HeadTailSinglyLinkedList::HeadTailSinglyLinkedList(const HeadTailSinglyLinkedList& list) : HeadTailSinglyLinkedList()
 {
 	skopiuj(list);
 }
+
+// destruktor 
 HeadTailSinglyLinkedList::~HeadTailSinglyLinkedList()
 {
 	skasuj();
@@ -21,14 +25,14 @@ HeadTailSinglyLinkedList& HeadTailSinglyLinkedList::operator=(const HeadTailSing
 {
 	skasuj();
 	skopiuj(list);
-	return *this;
+	return *this; // zwrócenie referencji do obiektu 
 }
 
 void HeadTailSinglyLinkedList::wyczysc()
 {
-	this->~HeadTailSinglyLinkedList();
-	head = nullptr;
-	tail = nullptr;
+	this->~HeadTailSinglyLinkedList(); // wyczyszczenie listy 
+	head = nullptr; // powrót do wartości początkowej heada 
+	tail = nullptr; // powrót do wartości począdkowej taila 
 	ilosc = 0;
 }
 
@@ -41,17 +45,17 @@ void HeadTailSinglyLinkedList::dodajNaPoczatek(int dane)
 
 	if (tail == nullptr)
 	{
-		tail = head;
+		tail = head; // jesli koniec to nullptr to tail jest jednoczesnie headem
 	}
 
-	ilosc++;
+	ilosc++; // inkrementuję ilość 
 }
 
 void HeadTailSinglyLinkedList::dodajNaKoniec(int dane)
 {
 	Element* element = new Element;
 	element->dane = dane;
-	element->nast = nullptr;
+	element->nast = nullptr; // wskaźnik na następny element 
 
 	if (tail == nullptr)
 	{
@@ -61,11 +65,11 @@ void HeadTailSinglyLinkedList::dodajNaKoniec(int dane)
 	else
 	{
 		tail->nast = element;
-		tail = element;
+		tail = element; // wskazanie nowego taila 
 	}
-	ilosc++;
+	ilosc++; // inkrementuje ilosc 
 }
-
+// dodawanie elementu na zadaną pozycję 
 bool HeadTailSinglyLinkedList::dodaj(int index, int dane)
 {
 	if (index < 0)
@@ -99,6 +103,7 @@ bool HeadTailSinglyLinkedList::dodaj(int index, int dane)
 	return true;
 }
 
+// usuwanie elementu z zadanej pozycji 
 bool HeadTailSinglyLinkedList::usun(int index)
 {
 	if (index < 0)
@@ -170,11 +175,13 @@ bool HeadTailSinglyLinkedList::usunZKonca()
 	return usun(ilosc - 1);
 }
 
+// wypisanie ilosci elementów 
 int HeadTailSinglyLinkedList::dajIlosc() const
 {
 	return ilosc;
 }
 
+// wypisanie danego elementu 
 int HeadTailSinglyLinkedList::dajEmenet(int index) const
 {
 	if (index < 0)
@@ -209,7 +216,7 @@ int HeadTailSinglyLinkedList::dajEmenet(int index) const
 	return przed->nast->dane;
 }
 
-
+// wypisanie listy 
 void HeadTailSinglyLinkedList::wypisz() const
 {
 	cout << "[";
@@ -229,6 +236,7 @@ void HeadTailSinglyLinkedList::wypisz() const
 	cout << "]" << endl;
 }
 
+// znalezienie elementu poprzedzającego 
 Element* HeadTailSinglyLinkedList::znajdzElementPrzed(int index) const
 {
 	if (index == 0)
@@ -253,6 +261,7 @@ Element* HeadTailSinglyLinkedList::znajdzElementPrzed(int index) const
 	return pom;
 }
 
+// skopiowanie zawartości listy 
 void HeadTailSinglyLinkedList::skopiuj(const HeadTailSinglyLinkedList& list)
 {
 	Element* kursor = list.head;
@@ -264,6 +273,7 @@ void HeadTailSinglyLinkedList::skopiuj(const HeadTailSinglyLinkedList& list)
 	}
 }
 
+// usunięcie elementów listy 
 void HeadTailSinglyLinkedList::skasuj()
 {
 	while (head != nullptr)

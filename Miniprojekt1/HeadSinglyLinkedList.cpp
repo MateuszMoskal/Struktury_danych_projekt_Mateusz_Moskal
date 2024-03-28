@@ -3,40 +3,44 @@
 
 using namespace std;
 
+// konstruktor
 HeadSinglyLinkedList::HeadSinglyLinkedList()
 {
-	head = nullptr;
+	head = nullptr; // wskaźnik jako nullptr
 	ilosc = 0;
 }
+// konstruktor kopiujący 
 HeadSinglyLinkedList::HeadSinglyLinkedList(const HeadSinglyLinkedList& list) : HeadSinglyLinkedList()
 {
-	skopiuj(list);
+	skopiuj(list); // skopiowanie zawartości listy 
 }
+
+// destruktor 
 HeadSinglyLinkedList::~HeadSinglyLinkedList()
 {
-	skasuj();
+	skasuj(); // zwolnienie pamięci 
 }
 HeadSinglyLinkedList& HeadSinglyLinkedList::operator=(const HeadSinglyLinkedList& list)
 {
 	skasuj();
-	skopiuj(list);
-	return *this;
+	skopiuj(list); 
+	return *this; // zwrócenie referencji do aktualnej listy 
 }
 
 void HeadSinglyLinkedList::wyczysc()
 {
-	this->~HeadSinglyLinkedList();
-	head = nullptr;
-	ilosc = 0;
+	this->~HeadSinglyLinkedList(); // wywołanie destruktora 
+	head = nullptr; // ustawienie wskaźnika do puntku podstawowego - nullptr 
+	ilosc = 0; // zresetowanie ilości elementów 
 }
 
 void HeadSinglyLinkedList::dodajNaPoczatek(int dane)
 {
-	Element* element = new Element;
+	Element* element = new Element; // utworzenie nowego elementu 
 	element->dane = dane;
-	element->nast = head;
-	head = element;
-	ilosc++;
+	element->nast = head; 
+	head = element; // ustawienie nowego elementu jako heada listy 
+	ilosc++; // zwiekszenie licznika
 }
 
 void HeadSinglyLinkedList::dodajNaKoniec(int dane)
@@ -45,7 +49,7 @@ void HeadSinglyLinkedList::dodajNaKoniec(int dane)
 	element->dane = dane;
 	element->nast = nullptr;
 
-	if (head == nullptr)
+	if (head == nullptr) // Sprawdzam czy lista jest pusta 
 	{
 		head = element;
 	}
@@ -54,73 +58,73 @@ void HeadSinglyLinkedList::dodajNaKoniec(int dane)
 		Element* pom = head;
 		while (pom->nast != nullptr)
 		{
-			pom = pom->nast;
+			pom = pom->nast; // przesuwanie elementu 
 		}
-		pom->nast = element;
+		pom->nast = element; // dpdanie elementu na koniec listy 
 	}
 	ilosc++;
 }
 
 bool HeadSinglyLinkedList::dodaj(int index, int dane)
 {
-	if (index < 0)
+	if (index < 0) // sprawdzenie indeksu czy zostałpoprawnie stworzony 
 	{
 		return false;
 	}
-	if (index == 0)
+	if (index == 0) // dodanie na początek listy 
 	{
 		dodajNaPoczatek(dane);
 		return true;
 	}
-	if (head == nullptr)
+	if (head == nullptr) // Sprawdzenie czy lista jest pusta 
 	{
 		return false;
 	}
-	Element* przed = znajdzElementPrzed(index);
+	Element* przed = znajdzElementPrzed(index); // znalezienie elementu poprzedzającego 
 	if (przed == nullptr)
 	{
 		return false;
 	}
 
-	Element* nowy = new Element;
+	Element* nowy = new Element; // nowy element 
 	nowy->dane = dane;
-	nowy->nast = przed->nast;
+	nowy->nast = przed->nast; // przypisanie wskaźnika na następny element 
 	przed->nast = nowy;
-	ilosc++;
+	ilosc++; // zwiekszenie ilosci
 	return true;
 }
 
 bool HeadSinglyLinkedList::usun(int index)
 {
-	if (index < 0)
+	if (index < 0) // sprawdzenie indeksu 
 	{
 		return false;
 	}
 
-	if (head == nullptr)
+	if (head == nullptr) // sprawdzenie czy lista jest pusta 
 	{
 		return false;
 	}
 
-	if (index == 0)
+	if (index == 0) // warunek usunięcia z początku listy 
 	{
 		return usunZPoczateku();
 	}
 
-	Element* przed = znajdzElementPrzed(index);
+	Element* przed = znajdzElementPrzed(index); // znalezienie elementu poprzedzającego 
 	if (przed == nullptr)
 	{
 		return false;
 	}
 
-	Element* doUsuniecia = przed->nast;
+	Element* doUsuniecia = przed->nast; // element do usunięcia 
 	if (doUsuniecia == nullptr)
 	{
 		return false;
 	}
 	przed->nast = doUsuniecia->nast;
-	delete doUsuniecia;
-	ilosc--;
+	delete doUsuniecia; // usunięcie elementu 
+	ilosc--; // zmniejszenie licznika 
 	return true;
 
 }
@@ -133,9 +137,9 @@ bool HeadSinglyLinkedList::usunZPoczateku()
 	}
 
 	Element* doUsuniecia = head;
-	head = head->nast;
-	delete doUsuniecia;
-	ilosc--;
+	head = head->nast; // przesunięcie wskaźnika na następny element 
+	delete doUsuniecia; // usunięcie elementu 
+	ilosc--; // zmniejszenie licznika 
 	return true;
 }
 bool HeadSinglyLinkedList::usunZKonca()
@@ -145,22 +149,22 @@ bool HeadSinglyLinkedList::usunZKonca()
 
 int HeadSinglyLinkedList::dajIlosc() const
 {
-	return ilosc;
+	return ilosc; // zwrócenie ilości elementów 
 }
 
 int HeadSinglyLinkedList::dajEmenet(int index) const
 {
-	if (index < 0)
+	if (index < 0) // sprawdzenie warunku poprawności 
 	{
 		return false;
 	}
 
-	if (head == nullptr)
+	if (head == nullptr) // sprawdzenie czy lista jest pusta 
 	{
 		return false;
 	}
 
-	if (index == 0)
+	if (index == 0) // zwrócenie pierwszego elementu 
 	{
 		return head->dane;
 	}
@@ -177,6 +181,7 @@ int HeadSinglyLinkedList::dajEmenet(int index) const
 	return przed->nast->dane;
 }
 
+// wypisanie zawartości listy 
 void HeadSinglyLinkedList::wypisz() const
 {
 	cout << "[";
@@ -196,8 +201,7 @@ void HeadSinglyLinkedList::wypisz() const
 	cout << "]" << endl;
 }
 
-
-
+// znalezienie elementu poprzedzającego element 
 Element* HeadSinglyLinkedList::znajdzElementPrzed(int index) const
 {
 	if (index == 0)
@@ -222,6 +226,7 @@ Element* HeadSinglyLinkedList::znajdzElementPrzed(int index) const
 	return pom;
 }
 
+// skopiowanie xzawartości listy 
 void HeadSinglyLinkedList::skopiuj(const HeadSinglyLinkedList& list)
 {
 	Element* kursor = list.head;
@@ -247,6 +252,7 @@ void HeadSinglyLinkedList::skopiuj(const HeadSinglyLinkedList& list)
 	ilosc = list.ilosc;
 }
 
+// usunięcie elementów listy 
 void HeadSinglyLinkedList::skasuj()
 {
 	while (head != nullptr)
