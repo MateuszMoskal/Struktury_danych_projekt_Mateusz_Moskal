@@ -1,13 +1,32 @@
 #include "BinarySearchTree.h"
 
-
 BinarySearchTree::BinarySearchTree()
 {
     korzen = nullptr;
     count = 0;
 }
 
-void BinarySearchTree::Add(int key, int value)
+BinarySearchTree::BinarySearchTree(const BinarySearchTree& tree)
+    :BinarySearchTree()
+{
+    copyTree(this, tree.korzen);
+}
+
+BinarySearchTree& BinarySearchTree::operator=(const BinarySearchTree& tree)
+{
+    BinarySearchTree::~BinarySearchTree();
+    copyTree(this, tree.korzen);
+    return *this;
+}
+
+BinarySearchTree::~BinarySearchTree()
+{
+    deleteItem(korzen);
+    korzen = nullptr;
+    count = 0;
+}
+
+void BinarySearchTree::AddOrUpdate(int key, int value)
 {
 
     TreeItem* item = CreateItem(nullptr, key, value);
@@ -18,26 +37,23 @@ void BinarySearchTree::Add(int key, int value)
     }
     else
     {
-        if (Add(korzen, item, 1) != getMinDeep())
+        if (AddOrUpdate(korzen, item, 1) != getMinDeep())
         {
             //wywazanie drzewa
             rozplaczDrzewo();
             zaplaczDrzewo();
         }
     }
-
-
-
-
 }
 
-TreeItem* BinarySearchTree::find(int key)
+
+TreeItem* BinarySearchTree::findItem(int key)
 {
     return find(korzen, key);
 }
 bool BinarySearchTree::remove(int key)
 {
-    TreeItem* element = find(key);
+    TreeItem* element = findItem(key);
 
     if (element == nullptr)
     {
@@ -46,7 +62,7 @@ bool BinarySearchTree::remove(int key)
     return remove(element);
 }
 
-int BinarySearchTree::Add(TreeItem* korzen, TreeItem* item, int layer)
+int BinarySearchTree::AddOrUpdate(TreeItem* korzen, TreeItem* item, int layer)
 {
 
     if (item->key < korzen->key)
@@ -54,24 +70,31 @@ int BinarySearchTree::Add(TreeItem* korzen, TreeItem* item, int layer)
         if (korzen->leftChild == nullptr)
         {
             korzen->leftChild = item;
+            item->parent = korzen;
             return layer;
         }
         else
         {
-            return Add(korzen->leftChild, item, layer + 1);
+            return AddOrUpdate(korzen->leftChild, item, layer + 1);
         }
     }
-    else
+    else if (item->key > korzen->key)
     {
         if (korzen->rightChild == nullptr)
         {
             korzen->rightChild = item;
+            item->parent = korzen;
             return layer;
         }
         else
         {
-            return Add(korzen->rightChild, item, layer + 1);
+            return AddOrUpdate(korzen->rightChild, item, layer + 1);
         }
+    }
+    else //update
+    {
+        korzen->value = item->value;
+        delete item;
     }
 }
 
@@ -145,10 +168,12 @@ bool BinarySearchTree::remove(TreeItem* element)
             {
                 rodzic->rightChild = dziecko;
             }
+            dziecko->parent = rodzic;
         }
         else
         {
             korzen = dziecko;
+            korzen->parent = nullptr;
         }
 
     }
@@ -162,7 +187,7 @@ TreeItem* BinarySearchTree::CreateItem(TreeItem* parent, int key, int value)
     TreeItem* item = new TreeItem;
     item->parent = parent;
     item->leftChild = nullptr;
-    item->leftChild = nullptr;
+    item->rightChild = nullptr;
     item->key = key;
     item->value = value;
     return item;
@@ -333,4 +358,26 @@ int BinarySearchTree::iloscObrotow(int n)
     }
 
     return wynik;
+}
+
+void BinarySearchTree::deleteItem(TreeItem* item)
+{
+    if (item == nullptr)
+    {
+        return;
+    }
+    deleteItem(item->leftChild);
+    deleteItem(item->rightChild);
+    delete item;
+}
+
+void BinarySearchTree::copyTree(BinarySearchTree* tree, TreeItem* target)
+{
+    if (target == nullptr)
+    {
+        return;
+    }
+    tree->AddOrUpdate(target->key, target->value);
+    copyTree(tree, target->leftChild);
+    copyTree(tree, target->rightChild);
 }

@@ -60,26 +60,24 @@ HashTableOpenAddresing& HashTableOpenAddresing::operator=(const HashTableOpenAdd
 	return *this;
 }
 
-void HashTableOpenAddresing::insert(int key, int value)
+bool HashTableOpenAddresing::insert(int key, int value)
 {
 
 	int indexStart = hash(key);
-	if (arr[indexStart] == nullptr)
+	int index;
+	for (int i = 0; i < arrSize; i++)
 	{
-		arr[indexStart] = new Item;
-		arr[indexStart]->key = key;
-		arr[indexStart]->value = value;
-		return;
-	}
-	for (int i = indexStart + 1; i % arrSize != indexStart; i++)
-	{
-		if (arr[i] != nullptr)
+		index = (i + indexStart) % arrSize;
+		if (arr[index] == nullptr)
 		{
-			arr[i]->key = key;
-			arr[i]->value = value;
-			return;
+			arr[index] = new Item;
+			arr[index]->key = key;
+			arr[index]->value = value;
+			return true;
 		}
 	}
+
+	return false;
 }
 void HashTableOpenAddresing::remove(int key)
 {
@@ -99,19 +97,37 @@ int HashTableOpenAddresing::get(int key)
 	return arr[findIndex(key)]->value;
 }
 
+void HashTableOpenAddresing::clean()
+{
+	cleanAndResize(arrSize);
+}
+void HashTableOpenAddresing::cleanAndResize(int size)
+{
+	HashTableOpenAddresing::~HashTableOpenAddresing();
+	this->arrSize = size;
+	this->arr = new Item * [arrSize];
+}
+
 int HashTableOpenAddresing::findIndex(int key)
 {
 	int indexStart = hash(key);
-	if (arr[indexStart] != nullptr && arr[indexStart]->key == key)
+	//if (arr[indexStart] != nullptr && arr[indexStart]->key==key)
+//	{
+//		return indexStart;
+//	}
+	int index;
+	for (int i = 0; i < arrSize; i++)
 	{
-		return indexStart;
-	}
-	for (int i = indexStart + 1; i % arrSize != indexStart; i++)
-	{
-		if (arr[i] != nullptr && arr[i]->key == key)
+		index = (i + indexStart) % arrSize;
+		if (arr[i] == nullptr)
+		{
+			return -1;
+		}
+		if (arr[i]->key == key)
 		{
 			return i;
 		}
 	}
+
 	return -1;
 }

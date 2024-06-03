@@ -31,9 +31,10 @@ HashTableSeparateChasingWithList& HashTableSeparateChasingWithList::operator=(co
 	return *this;
 }
 
-void HashTableSeparateChasingWithList::insert(int key, int value)
+bool HashTableSeparateChasingWithList::insert(int key, int value)
 {
 	arr[hash(key)].addOrUpdate(key, value);
+	return true;
 }
 void HashTableSeparateChasingWithList::remove(int key)
 {
@@ -46,4 +47,15 @@ bool HashTableSeparateChasingWithList::contains(int key)
 int HashTableSeparateChasingWithList::get(int key)
 {
 	return arr[hash(key)].findItem(key)->value;
+}
+
+void HashTableSeparateChasingWithList::clean()
+{
+	cleanAndResize(arrSize);
+}
+void HashTableSeparateChasingWithList::cleanAndResize(int size)
+{
+	HashTableSeparateChasingWithList::~HashTableSeparateChasingWithList();
+	this->arrSize = size;
+	this->arr = new HeadSinglyLinkedList[arrSize];
 }

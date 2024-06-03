@@ -13,14 +13,17 @@ class BinarySearchTree
 private:
     TreeItem* korzen;
     int count;
-    BinarySearchTree();
 public:
-    void Add(int key, int value);
-    TreeItem* find(int key);
+    BinarySearchTree();
+    BinarySearchTree(const BinarySearchTree& tree);
+    ~BinarySearchTree();
+    BinarySearchTree& operator=(const BinarySearchTree& tree);
+    void AddOrUpdate(int key, int value);
+    TreeItem* findItem(int key);
     bool remove(int key);
 
 private:
-    int Add(TreeItem* root, TreeItem* item, int layer);
+    int AddOrUpdate(TreeItem* root, TreeItem* item, int layer);
     TreeItem* CreateItem(TreeItem* parent, int key, int value);
     TreeItem* find(TreeItem* korzen, int key);
     bool remove(TreeItem* element);
@@ -34,4 +37,7 @@ private:
     TreeItem* rightRotation(TreeItem* A);
     TreeItem* leftRotation(TreeItem* A);
     int iloscObrotow(int n);
+
+    void deleteItem(TreeItem* item);
+    void copyTree(BinarySearchTree* tree, TreeItem* target);
 };

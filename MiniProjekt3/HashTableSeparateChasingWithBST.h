@@ -1,17 +1,17 @@
 #pragma once
 #include "Dictionary.h"
-#include "HeadSinglyLinkedList.h"
-class HashTableSeparateChasingWithList : public Dictionary
+#include "BinarySearchTree.h"
+class HashTableSeparateChasingWithBST : public Dictionary
 {
 private:
-	HeadSinglyLinkedList* arr;
+	BinarySearchTree* arr;
 	int arrSize;
 
 public:
-	HashTableSeparateChasingWithList(int arrSize);
-	HashTableSeparateChasingWithList(const HashTableSeparateChasingWithList& hashMap);
-	~HashTableSeparateChasingWithList();
-	HashTableSeparateChasingWithList& operator=(const HashTableSeparateChasingWithList& hashMap);
+	HashTableSeparateChasingWithBST(int arrSize);
+	HashTableSeparateChasingWithBST(const HashTableSeparateChasingWithBST& hashMap);
+	~HashTableSeparateChasingWithBST();
+	HashTableSeparateChasingWithBST& operator=(const HashTableSeparateChasingWithBST& hashMap);
 
 	virtual bool insert(int key, int value) override;
 	virtual void remove(int key) override;

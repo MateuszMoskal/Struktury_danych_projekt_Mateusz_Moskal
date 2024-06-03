@@ -1,6 +1,8 @@
 #pragma once
 #include "Dictionary.h"
 
+#include "Dictionary.h"
+
 struct Item
 {
 	int key;
@@ -10,18 +12,22 @@ struct Item
 
 class HashTableOpenAddresing : public Dictionary
 {
+private:
 	Item** arr;
 	int arrSize;
-
+public:
 	HashTableOpenAddresing(int arrSize);
 	HashTableOpenAddresing(const HashTableOpenAddresing& hashMap);
 	~HashTableOpenAddresing();
 	HashTableOpenAddresing& operator=(const HashTableOpenAddresing& hashMap);
 
-	virtual void insert(int key, int value) override;
+	virtual bool insert(int key, int value) override;
 	virtual void remove(int key) override;
 	virtual bool contains(int key) override;
 	virtual int get(int key) override;
+
+	virtual void clean() override;
+	virtual void cleanAndResize(int size) override;
 
 	int hash(int key)
 	{
@@ -30,3 +36,4 @@ class HashTableOpenAddresing : public Dictionary
 	int findIndex(int key);
 
 };
+
