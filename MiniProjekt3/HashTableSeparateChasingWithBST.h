@@ -1,11 +1,11 @@
 #pragma once
 #include "Dictionary.h"
 #include "BinarySearchTree.h"
-class HashTableSeparateChasingWithBST : public Dictionary
+class HashTableSeparateChasingWithBST : public Dictionary // klasa dziedziczy po klasie Dictionary 
 {
 private:
-	BinarySearchTree* arr;
-	int arrSize;
+	BinarySearchTree* arr; // wskaznik na tablice wskaznikow do drzew binarnych 
+	int arrSize; // rozmiar tablicy 
 
 public:
 	HashTableSeparateChasingWithBST(int arrSize);
@@ -22,9 +22,9 @@ public:
 	virtual void cleanAndResize(int size) override;
 
 private:
-	int hash(int key)
+	int hash(int key) // funkcja hashujaca obliczajaca indeks dla podanego klucza 
 	{
-		return key % arrSize;
+		return key % arrSize; // reszta z dzielenia klucza przez rozmiar tablicy 
 	}
 };
 

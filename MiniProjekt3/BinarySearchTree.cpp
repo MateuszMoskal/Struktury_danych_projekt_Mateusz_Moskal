@@ -1,35 +1,37 @@
 #include "BinarySearchTree.h"
 
+// Tutaj tworze puste drzewo 
 BinarySearchTree::BinarySearchTree()
 {
-    korzen = nullptr;
-    count = 0;
+    korzen = nullptr; // korzen narazie jest nullem bo go fizycznie nie ma 
+    count = 0; // ustawiam liczbe elementow na zero 
 }
 
+// konstruktor tworzy nowe drzewo jako kopiê istniejacego drzewa 
 BinarySearchTree::BinarySearchTree(const BinarySearchTree& tree)
-    :BinarySearchTree()
+    :BinarySearchTree() // puste drzewo 
 {
-    copyTree(this, tree.korzen);
+    copyTree(this, tree.korzen); // kopiuje elementy 
 }
 
 BinarySearchTree& BinarySearchTree::operator=(const BinarySearchTree& tree)
 {
-    BinarySearchTree::~BinarySearchTree();
-    copyTree(this, tree.korzen);
+    BinarySearchTree::~BinarySearchTree(); // usuwam bie¿ace drzewo 
+    copyTree(this, tree.korzen); // kopiuje elementy 
     return *this;
 }
 
 BinarySearchTree::~BinarySearchTree()
 {
-    deleteItem(korzen);
+    deleteItem(korzen); // usuwa wszystkie elementy 
     korzen = nullptr;
-    count = 0;
+    count = 0; // resetuje liczbe elementow 
 }
 
 void BinarySearchTree::AddOrUpdate(int key, int value)
 {
 
-    TreeItem* item = CreateItem(nullptr, key, value);
+    TreeItem* item = CreateItem(nullptr, key, value); // tworzenie nowego elementu 
     count++;
     if (korzen == nullptr)
     {
@@ -46,11 +48,12 @@ void BinarySearchTree::AddOrUpdate(int key, int value)
     }
 }
 
-
+// Znajduje element o okreslonym kluczu 
 TreeItem* BinarySearchTree::findItem(int key)
 {
     return find(korzen, key);
 }
+// usuwam element o okreslonym kluczu 
 bool BinarySearchTree::remove(int key)
 {
     TreeItem* element = findItem(key);
@@ -66,6 +69,7 @@ int BinarySearchTree::AddOrUpdate(TreeItem* korzen, TreeItem* item, int layer)
 {
 
     if (item->key < korzen->key)
+    // idê do lewego poddrzewa 
     {
         if (korzen->leftChild == nullptr)
         {
@@ -79,6 +83,7 @@ int BinarySearchTree::AddOrUpdate(TreeItem* korzen, TreeItem* item, int layer)
         }
     }
     else if (item->key > korzen->key)
+    // idê do prawego poddrzewa
     {
         if (korzen->rightChild == nullptr)
         {
@@ -91,14 +96,14 @@ int BinarySearchTree::AddOrUpdate(TreeItem* korzen, TreeItem* item, int layer)
             return AddOrUpdate(korzen->rightChild, item, layer + 1);
         }
     }
-    else //update
+    else // aktualizuje istniejacy element 
     {
         korzen->value = item->value;
         delete item;
     }
 }
 
-
+// wyszukiwanie elementu o okreslonym kluczu 
 TreeItem* BinarySearchTree::find(TreeItem* root, int key)
 {
     if (root == nullptr)
@@ -119,6 +124,7 @@ TreeItem* BinarySearchTree::find(TreeItem* root, int key)
     }
 }
 
+// usuwam element z drzewa 
 bool BinarySearchTree::remove(TreeItem* element)
 {
     if (element->leftChild == nullptr && element->rightChild == nullptr) //nie ma dzieci
@@ -141,7 +147,7 @@ bool BinarySearchTree::remove(TreeItem* element)
         }
         delete element;
     }
-    else if (element->leftChild != nullptr && element->rightChild != nullptr) //mamy 2 dzieci
+    else if (element->leftChild != nullptr && element->rightChild != nullptr) //mamy dwojke dzieci
     {
         //szukamu successora czyli najbli¿szy wiekszy element (nie koniecznie prawe dziecko)
         TreeItem* successor = findMinItem(element->rightChild);
@@ -181,7 +187,7 @@ bool BinarySearchTree::remove(TreeItem* element)
     return true;
 }
 
-
+// tworzenie nowego elementu do drzewa 
 TreeItem* BinarySearchTree::CreateItem(TreeItem* parent, int key, int value)
 {
     TreeItem* item = new TreeItem;
@@ -193,6 +199,8 @@ TreeItem* BinarySearchTree::CreateItem(TreeItem* parent, int key, int value)
     return item;
 }
 
+
+// Znajduje namniejszy element w poddrzewie 
 TreeItem* BinarySearchTree::findMinItem(TreeItem* root)
 {
     if (root == nullptr)
@@ -209,6 +217,7 @@ TreeItem* BinarySearchTree::findMinItem(TreeItem* root)
     }
 }
 
+// procedura wywazenia drzewa 
 void BinarySearchTree::rozplaczDrzewo()
 {
     TreeItem* element = korzen;
@@ -232,12 +241,13 @@ void BinarySearchTree::rozplaczDrzewo()
 
 void BinarySearchTree::zaplaczDrzewo()
 {
+    // liczenie liczby obrotow 
     int rotations = iloscObrotow(count + 1) - 1;
-    TreeItem* element = korzen;
-    for (int i = 0; i < (count - rotations); i++)
+    TreeItem* element = korzen; // rozpoczynamy od korzenia 
+    for (int i = 0; i < (count - rotations); i++) // lewe rotacje az do wywazenia drzewa
     {
         if (element != nullptr && element->rightChild != nullptr) {
-            leftRotation(element);
+            leftRotation(element); // lewa rotacja 
             element = element->parent;
             element = element->rightChild;
         }
@@ -245,7 +255,7 @@ void BinarySearchTree::zaplaczDrzewo()
     element = korzen;
     while (rotations > 1)
     {
-        rotations = rotations / 2;
+        rotations = rotations / 2; // dziele liczbe obrotow na pol 
         element = korzen;
         for (int i = 0; i < rotations; i++)
         {
@@ -260,12 +270,13 @@ void BinarySearchTree::zaplaczDrzewo()
     element = korzen;
 }
 
+// Funkcja do wykonywania rotacji w prawo 
 TreeItem* BinarySearchTree::rightRotation(TreeItem* A)
 {
     TreeItem* B = A->leftChild;
     if (B == nullptr)
     {
-        return A;
+        return A; // sprawdzam czy istnieje lewe dziecko 
     }
     TreeItem* p = A->parent;
     A->leftChild = B->rightChild;
@@ -294,11 +305,13 @@ TreeItem* BinarySearchTree::rightRotation(TreeItem* A)
 
     return  B;
 }
+
+// Funkcja wykonujaca rotacje w lewo 
 TreeItem* BinarySearchTree::leftRotation(TreeItem* A) {
     TreeItem* B = A->rightChild;
     if (B == nullptr)
     {
-        return A;
+        return A; // sprawdzamy czy istnieje prawe dziecko 
     }
     TreeItem* p = A->parent;
     A->rightChild = B->leftChild;
@@ -327,22 +340,23 @@ TreeItem* BinarySearchTree::leftRotation(TreeItem* A) {
     return B;
 }
 
-
+// Obliczam minimalna glebokosc drzewa 
 int BinarySearchTree::getMinDeep()
 {
-    int layers = 0;
+    int layers = 0; // licznik warstw 
     int countElements = count;
+    // obliczam liczbe warstw 
     while (countElements > 0)
     {
-        layers++;
+        layers++; // zwieksz licznik warstw
         countElements = countElements / 2;
     }
-    return layers;
+    return layers; // minimalna glebokosc drzewa
 
 
 }
 
-
+// Funkcja oblicza liczbe obrotow do wywazenia 
 int BinarySearchTree::iloscObrotow(int n)
 {
     int potega = 1;
@@ -360,24 +374,26 @@ int BinarySearchTree::iloscObrotow(int n)
     return wynik;
 }
 
+// Funkcja do usuwania elementow z drzewa 
 void BinarySearchTree::deleteItem(TreeItem* item)
 {
     if (item == nullptr)
     {
         return;
     }
-    deleteItem(item->leftChild);
-    deleteItem(item->rightChild);
-    delete item;
+    deleteItem(item->leftChild); // usun lewe dziecko 
+    deleteItem(item->rightChild); // usun prawe dziecko 
+    delete item; // usun element 
 }
 
+// funkcja do kopiowania drzewa 
 void BinarySearchTree::copyTree(BinarySearchTree* tree, TreeItem* target)
 {
     if (target == nullptr)
     {
         return;
     }
-    tree->AddOrUpdate(target->key, target->value);
-    copyTree(tree, target->leftChild);
-    copyTree(tree, target->rightChild);
+    tree->AddOrUpdate(target->key, target->value); // dodawanie i aktualizowanie elementu 
+    copyTree(tree, target->leftChild); // kopiowanie lewego dziecka 
+    copyTree(tree, target->rightChild); // kopiowanie prawego dziecka 
 }

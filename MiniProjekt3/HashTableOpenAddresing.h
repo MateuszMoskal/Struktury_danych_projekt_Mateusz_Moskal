@@ -1,12 +1,11 @@
 #pragma once
 #include "Dictionary.h"
 
-#include "Dictionary.h"
-
+// Struktura reprezentujaca element w tablicy hashujacej 
 struct Item
 {
-	int key;
-	int value;
+	int key; // klucz elementu 
+	int value; // wartosc elementu 
 };
 
 
@@ -14,7 +13,7 @@ class HashTableOpenAddresing : public Dictionary
 {
 private:
 	Item** arr;
-	int arrSize;
+	int arrSize; // rozmiar tablicy 
 public:
 	HashTableOpenAddresing(int arrSize);
 	HashTableOpenAddresing(const HashTableOpenAddresing& hashMap);
@@ -29,9 +28,9 @@ public:
 	virtual void clean() override;
 	virtual void cleanAndResize(int size) override;
 
-	int hash(int key)
+	int hash(int key) // funkcja hashujaca obliczajaca indeks dla podanego klucza 
 	{
-		return key % arrSize;
+		return key % arrSize; // reszta z dzielenia klucza przez rozmiar tablicy 
 	}
 	int findIndex(int key);
 

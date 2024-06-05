@@ -4,8 +4,8 @@
 class HashTableSeparateChasingWithList : public Dictionary
 {
 private:
-	HeadSinglyLinkedList* arr;
-	int arrSize;
+	HeadSinglyLinkedList* arr; // wskaznik na tablice wskaznikow do do list jednokierunkowych z jednym wskaznikiem (head)
+	int arrSize; // rozmiar tablicy 
 
 public:
 	HashTableSeparateChasingWithList(int arrSize);
@@ -22,9 +22,9 @@ public:
 	virtual void cleanAndResize(int size) override;
 
 private:
-	int hash(int key)
+	int hash(int key) // funkcja hashujaca obliczajaca indeks dla podanego klucza 
 	{
-		return key % arrSize;
+		return key % arrSize; // reszta z dzielenia klucza przez rozmiar tablicy 
 	}
 };
 

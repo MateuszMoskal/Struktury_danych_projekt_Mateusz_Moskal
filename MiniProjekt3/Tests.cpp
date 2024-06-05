@@ -13,6 +13,7 @@ Tests::Tests(int coutnOperation, int dictionarySize)
     this->dictionarySize = dictionarySize;
 }
 
+// Funkcja przeprowadzaj¹ca testy dla wszystkich implementacji s³owników
 void Tests::makeTests()
 {
     Dictionary* dictionary;
@@ -21,10 +22,13 @@ void Tests::makeTests()
     cout << "| slownik                                           | insert     | remove     | wielkosc slownika | ilosc elementow |" << endl;
     cout << "+---------------------------------------------------+------------+------------+-------------------+-----------------+" << endl;
 
+    // Tworzenie tablic z kluczami do wstawiania i usuwania
     int* keysToCreate = new int[coutnOperation];
     int* kaysToDelete = new int[coutnOperation];
     keysToCreate[0] = 1;
     kaysToDelete[0] = 1;
+
+    // Tworzenie unikalnych kluczy 
     for (int i = 1; i < coutnOperation; i++)
     {
         keysToCreate[i] = keysToCreate[i - 1] + rand() % 5;
@@ -42,13 +46,13 @@ void Tests::makeTests()
 
     dictionary = new HashTableOpenAddresing(dictionarySize);
     makeTests(dictionary, "Hash table with open addresing", keysToCreate, kaysToDelete);
-
     dictionary = new HashTableSeparateChasingWithList(dictionarySize);
     makeTests(dictionary, "Hash table with separate chasing with linked list", keysToCreate, kaysToDelete);
     dictionary = new HashTableSeparateChasingWithBST(dictionarySize);
     makeTests(dictionary, "Hash table with separate chasing with BST", keysToCreate, kaysToDelete);
 }
 
+// Funkcja wykonuj¹ca testy dla konkretnego s³ownika
 void Tests::makeTests(Dictionary* dictionary, string nazwa, int* keysToCreate, int* kaysToDelete)
 {
     double czas;
@@ -63,12 +67,14 @@ void Tests::makeTests(Dictionary* dictionary, string nazwa, int* keysToCreate, i
     cout << fixed << setw(17) << dictionarySize << " | ";
     cout << fixed << setw(15) << coutnOperation << " | " << endl;
 
+    // Zwolnienie pamiêci
     delete dictionary;
 
     cout << "+---------------------------------------------------+------------+------------+-------------------+-----------------+" << endl;
 
 }
 
+// Funkcja mierz¹ca czas wstawiania elementów do s³ownika
 double Tests::insert(Dictionary* dictionary, int* keys)
 {
     auto start = std::chrono::high_resolution_clock::now();
@@ -82,6 +88,8 @@ double Tests::insert(Dictionary* dictionary, int* keys)
 
     return duration.count();
 }
+
+// Funkcja mierz¹ca czas usuwania elementów ze s³ownika
 double Tests::remove(Dictionary* dictionary, int* keys)
 {
     auto start = std::chrono::high_resolution_clock::now();

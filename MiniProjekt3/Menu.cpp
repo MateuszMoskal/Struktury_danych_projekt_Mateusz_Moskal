@@ -16,7 +16,7 @@ void Menu::run()
 	int wybor = 0;
 	while (wybor != 7)
 	{
-		wypiszMenu();
+		wypiszMenu(); // Wyœwietlenie menu
 		wybor = ConsoleReader::readInt("wybor", 1, 7);
 
 		switch (wybor)
@@ -25,19 +25,19 @@ void Menu::run()
 			wczytajZPliku();
 			break;
 		case 2:
-			stworzLosowe();
+			stworzLosowe(); // Losowe dane 
 			break;
 		case 3:
-			wyczysc();
+			wyczysc(); // Wyczysc s³ownik
 			break;
 		case 4:
-			dodaj();
+			dodaj(); // Dodaj element do s³ownika
 			break;
 		case 5:
-			znajdz();
+			znajdz(); // Znajdz element w s³owniku
 			break;
 		case 6:
-			usun();
+			usun(); // // Usun element ze s³ownika
 			break;
 		}
 		cout << endl;
@@ -57,50 +57,55 @@ void Menu::wypiszMenu()
 	cout << endl;
 }
 
-void Menu::wyczysc()//virtual void clean() = 0;
+// Funkcja czyszcz¹ca s³ownik i ustawiaj¹ca nowy rozmiar
+void Menu::wyczysc()
 {
 	dictionary->cleanAndResize(ConsoleReader::readInt("wybor", 5, 10000000));
 	cout << "wyczyszczono slownik i nadano mu nowy rozmiar" << endl;
 }
+// Funkcja wczytuj¹ca dane z pliku
 void Menu::wczytajZPliku()
 {
 	string nazwaPliku = ConsoleReader::readString("nazwe pliku", 3, 1000);
 
-	ifstream plik(nazwaPliku);
+	ifstream plik(nazwaPliku); // Otwarcie pliku
 
 	if (!plik.good())
 	{
 		cout << "nie udalo sie poprawnie otworzyc pliku" << endl;
 		return;
 	}
-	dictionary->clean();
+	dictionary->clean(); // Czyszczenie slownika
 	int key;
 	int value;
 	while (plik >> key && plik >> value)
 	{
-		dictionary->insert(key, value);
+		dictionary->insert(key, value); // Wstawienie kluczy i wartoœci do s³ownika
 	}
-	plik.close();
+	plik.close(); // Zamkniêcie pliku
 	cout << "pomyslnie wczytano plik " << endl;
 }
 
+// Funkcja tworz¹ca losowe dane
 void Menu::stworzLosowe()
 {
 	int wielkosc = ConsoleReader::readInt("ilosc elementow jaka ma zawierac kolejka", 1, 12);
 	dictionary->clean();
 	for (int i = 0; i < wielkosc; i++)
 	{
-		dictionary->insert(rand(), rand());
+		dictionary->insert(rand(), rand()); // Wstawienie losowych wartoœci do s³ownika
 	}
 }
-
-void Menu::dodaj()//virtual void insert(int item, int priorytary) = 0;
+// Funkcja dodaj¹ca element do s³ownika
+void Menu::dodaj()
 {
 	int key = ConsoleReader::readInt("wartosc klucza", -1000000, 1000000);
 	int value = ConsoleReader::readInt("wartosc", -1000000, 1000000);
-	dictionary->insert(key, value);
+	dictionary->insert(key, value); // Wstawienie klucza i wartoœci do s³ownika
 }
-void Menu::znajdz()//virtual void insert(int item, int priorytary) = 0;
+
+// Funkcja znajduj¹ca element w s³owniku
+void Menu::znajdz()
 {
 	int key = ConsoleReader::readInt("wartosc klucza", -1000000, 1000000);
 	if (dictionary->contains(key))
@@ -112,13 +117,13 @@ void Menu::znajdz()//virtual void insert(int item, int priorytary) = 0;
 		cout << "nie znaleziono elementu o podanym kluczu" << endl;
 	}
 }
-
+// Funkcja usuwaj¹ca element ze s³ownika
 void Menu::usun()
 {
 	int key = ConsoleReader::readInt("wartosc klucza", -1000000, 1000000);
 	if (dictionary->contains(key))
 	{
-		dictionary->remove(key);
+		dictionary->remove(key); // Usuniêcie elementu
 		cout << "usunieto element o podanym kluczu" << endl;
 	}
 	else

@@ -9,6 +9,7 @@
 
 using namespace std;
 
+// Funkcja wyœwietlaj¹ca g³owne menu programu
 void wypiszMenu()
 {
 	cout << "Menu" << endl;
@@ -23,14 +24,16 @@ void wypiszMenu()
 
 int main()
 {
-	srand(time(0));
+	srand(time(0)); // generator losowy
 	HashTableOpenAddresing openAddresing(100);
 	HashTableSeparateChasingWithList separateChasingWithList(100);
 	HashTableSeparateChasingWithBST separateChasingWithBST(100);
-	int coutnOperation = 100000;
-	int dictionarySize = 500000;
-	Tests pomiar(coutnOperation, dictionarySize);
+	int coutnOperation = 100000; // Liczba operacji do wykonania w testach
+	int dictionarySize = 500000; // Rozmiar s³ownika do testów
+	Tests pomiar(coutnOperation, dictionarySize); // obiekt do testów
 	//Tests pomiar(100, 200);
+
+	// Tworzenie menu dla ró¿nych implementacji s³owników
 	Menu menuOpenAddresing(&openAddresing, "Hash table with open addresing");
 	Menu menuSeparateChasingWithList(&separateChasingWithList, "Hash table with separate chasing with linked list");
 	Menu menuSeparateChasingWithBST(&separateChasingWithBST, "Hash table with separate chasing with BST");
@@ -44,16 +47,16 @@ int main()
 		switch (wybor)
 		{
 		case 1:
-			menuOpenAddresing.run();
+			menuOpenAddresing.run(); // Uruchomienie menu dla HashTableOpenAddresing
 			break;
 		case 2:
-			menuSeparateChasingWithList.run();
+			menuSeparateChasingWithList.run(); // Uruchomienie menu dla HashTableSeparateChasingWithList
 			break;
 		case 3:
-			menuSeparateChasingWithBST.run();
+			menuSeparateChasingWithBST.run(); // Uruchomienie menu dla HashTableSeparateChasingWithBST
 			break;
 		case 4:
-			pomiar.makeTests();
+			pomiar.makeTests(); // Wykonanie testów wydajnoœci
 			break;
 		}
 	}
