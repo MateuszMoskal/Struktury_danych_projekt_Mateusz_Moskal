@@ -136,13 +136,13 @@ int HashTableOpenAddresing::findIndex(int key)
 	for (int i = 0; i < arrSize; i++)
 	{
 		index = (i + indexStart) % arrSize;
-		if (arr[i] == nullptr)
+		if (arr[index] == nullptr)
 		{
 			return -1;
 		}
-		if (arr[i]->key == key)
+		if (arr[index]->key == key)
 		{
-			return i;
+			return index;
 		}
 	}
 
